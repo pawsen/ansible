@@ -1,0 +1,34 @@
+[global_config]
+  enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
+  suppress_multiple_term_dialog = True
+  title_inactive_bg_color = "#dedede"
+  title_inactive_fg_color = "#2d2d2d"
+  title_transmit_bg_color = "#d64937"
+  title_transmit_fg_color = "#f9f9f9"
+[keybindings]
+  next_tab = None
+  page_down = <Primary>Page_Down
+  page_up = <Primary>Page_Up
+  prev_tab = None
+[layouts]
+  [[default]]
+    [[[child1]]]
+      parent = window0
+      profile = default
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      profile = None
+      type = Window
+[plugins]
+[profiles]
+  [[default]]
+    background_image = None
+    copy_on_selection = True
+    foreground_color = "#ffffff"
+    scrollback_infinite = True
+    scrollbar_position = hidden
+  [[Admin Commands]]
+    background_color = "#995252"
+    background_image = None
+    foreground_color = "#ffffff"

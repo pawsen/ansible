@@ -1,0 +1,14 @@
+- name: Change Default Shell to Zsh
+  become: yes
+  user:
+    name: "{{ ansible_user }}"
+    shell: /bin/zsh
+
+- name: Setup zsh cheatsheet
+  become: yes
+  file:
+    state: link
+    dest: "/usr/share/man/man1/zshcheatsheet.1"
+    src: "{{ playbook_dir }}/roles/ubuntu/files/zshcheatsheet"
+    force: yes
+

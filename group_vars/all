@@ -1,0 +1,18 @@
+---
+locale:
+  generated: # must be sorted
+  - da_DK.UTF-8 UTF-8
+  - en_US.UTF-8 UTF-8
+  default:
+    LANG: 'en_US.UTF-8'
+
+timezone: 'Europe/Copenhagen'
+
+# this could also be in inventory file or in host_vars/all
+ansible_user: vagrant
+ansible_ssh_pass: vagrant
+ansible_become_pass: vagrant
+ansible_ssh_private_key_file: ~/.vagrant.d/insecure_private_key
+
+# todo: user accout to setup
+user: vagrant

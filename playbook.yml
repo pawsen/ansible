@@ -1,0 +1,18 @@
+---
+# ansible-playbook -i localhost, playbook.yml -e 'ansible_python_interpreter=/usr/bin/python3'
+
+- hosts: all
+  # connection: local
+  gather_facts: yes
+  roles:
+    - role: ubuntu
+      tags: ubuntu
+    - role: gnome
+      tags: gnome
+    - role: gnomeshell
+      tags: gnome
+    - role: arduino
+      tags: arduino
+
+
+ 

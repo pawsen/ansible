@@ -1,0 +1,74 @@
+- name: Add Additional APT Keys
+  become: yes
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: "{{ item }}"
+  with_items: "{{ ui_apt_keys }}"
+  when: ui_apt_keys is defined
+
+- name: Add Additional APT Repostories
+  become: yes
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ ui_apt_repos }}"
+  when: ui_apt_repoes is defined
+
+- name: Install Other APT Packages
+  become: yes
+  apt:
+    pkg: "{{ other_packages }}"
+    state: latest
+
+- name: Remove unnesecary packages
+  become: yes
+  apt:
+    pkg: "{{ remove_packages }}" 
+    state: absent
+  when: remove_packages is defined
+
+- name: Make sure Flash player is uninstalled
+  become: yes
+  apt:
+    pkg: flashplugin-installer
+    state: absent
+
+- name: Set file type associations
+  file:
+    state: link
+    src: "{{ playbook_dir }}/roles/gnome/files/mimeapps.list"
+    dest: ~/.config/mimeapps.list
+    force: yes
+- debug: msg='{{ playbook_dir }}'
+
+# - name: Set Tilix as Default Terminal
+#   gsettings:
+#     schema: org.gnome.desktop.default-applications.terminal
+#     key: exec
+#     value: tilix
+
+- name: local applications directory
+  file:
+    state: directory
+    dest: "~/.local/share/applications"
+
+# - name: Meld Settings
+#   gsettings:
+#     schema: org.gnome.meld
+#     key: "{{ item.key }}"
+#     value: "{{ item.value }}"
+#   with_items:
+#     - {key: highlight-syntax, value: "true"}
+#     - {key: style-scheme, value: "cobalt"}
+#     - {key: show-line-numbers, value: "true"}
+
+- include_tasks: wireshark.yml
+
+- include_tasks: redshift.yml
+
+- include_tasks: terminator.yml
+
+- include_tasks: amazon.yml
+
+# - include_tasks: powersettings.yml

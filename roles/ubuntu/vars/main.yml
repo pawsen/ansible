@@ -1,0 +1,61 @@
+apt_repos:
+#  - 'deb http://ppa.launchpad.net/mercurial-ppa/releases/ubuntu trusty main'
+  - 'ppa:git-core/ppa'
+  - 'ppa:kelleyk/emacs'
+
+#apt_keys:
+#  - '41BD8711B1F0EC2B0D85B91CF59CE3A8323293EE'  # Mercurial
+
+apt_packages:
+  # - ack-grep # use ripgrep instead
+  - apt-transport-https
+  - aria2
+  - arp-scan
+  - at
+  - autoconf
+  - axel
+  - bzr
+  - bzr-builder
+  - cabal-debian
+  - cabal-install
+  - cmatrix
+  - colordiff
+  - curl
+  - dict
+  - dict-gcide
+  - dictd
+  - exuberant-ctags
+  - ffmpeg
+  - figlet
+  - fg-find  # set: alias fd=fdfind
+  - git
+  - htop
+  - httpcode
+  - iftop
+  - inotify-tools
+  - jq
+  - lame
+  - libblas3
+  - liblapack3
+  - mesa-utils
+  - mlocate
+  - most
+  - nmap
+  - pass
+  - ppa-purge
+  - python-dev
+  - python-setuptools
+  - ripgrep  # rg, replacement for grep
+  - shellcheck
+  - smartmontools
+  - traceroute
+  - tree
+  - unrar
+  - vim
+  - virtualenvwrapper
+  - vorbis-tools
+  - whois
+  - xsel
+  - zsh
+  - emacs26
+

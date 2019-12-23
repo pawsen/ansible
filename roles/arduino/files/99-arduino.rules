@@ -1,0 +1,4 @@
+# remember to restart with sudo udevadm control --reload-rules
+# Arduino
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", SYMLINK+="arduino", GROUP="dialout", MODE="0666"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", SYMLINK+="arduino", GROUP="dialout", MODE="0666"

@@ -1,0 +1,9 @@
+- name: Remove amazon stuff
+  become: yes
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /usr/share/applications/ubuntu-amazon-default.desktop
+    - /usr/share/unity-webapps/userscripts/unity-webapps-amazon/Amazon.user.js
+    - /usr/share/unity-webapps/userscripts/unity-webapps-amazon/manifest.json

@@ -1,0 +1,27 @@
+---
+ui_apt_repos:
+  - "deb http://archive.canonical.com/ {{ ansible_distribution_release }} partner"
+  - "ppa:mozillateam/firefox-next"
+
+#ui_apt_keys:
+#  - "1C61A2656FB57B7E4DE0F4C1FC918B335044912E"  # Dropbox
+
+other_packages:
+  - elementary-icon-theme  # Installs hi-res icons on all icon themes
+  - caffeine
+  - firefox
+  - gimp
+  - gnome-dictionary
+  - gparted
+  - pavucontrol
+  - powerline
+  - synaptic
+  - transmission-gtk
+  - virtualbox
+  - vlc
+  - ubuntu-gnome-desktop
+  - terminator
+
+remove_packages:
+  - tomboy
+  - thunderbird

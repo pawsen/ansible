@@ -1,0 +1,63 @@
+.TH "ZSH CHEATSHEET" 1
+
+.SH SUMMARY
+A list of useful zsh commands for quick reference
+
+.SH COMMANDS
+
+.B Ctrl+X Ctrl+E
+- Open Command in
+.B $EDITOR
+
+.SH EXPANSIONS
+
+placing an
+.B =
+before an executable command will expand it to its full path
+
+E.g.
+.B echo =cat
+results in the output
+.B /bin/cat
+
+.SH ARGUMENT REUSE
+
+.B !$
+expands to the first argument of the last command
+
+.B !:n
+expands to the nth argument of the last command
+
+.B !^
+expands to the last argument of the last command
+
+.SH PARAMETER EXPANSION
+
+.SS Replace:
+
+.nf
+$ a="hello world hello world"
+
+
+# Start from Beginning
+$ echo "${a/#hello/goodbye}"
+goodbye world hello world
+
+
+# Start from End
+$ echo "${a/$hello/mike}"
+hello world hello mike
+
+
+# All
+$ echo "${a//world/mike}"
+hello mike hello mike
+.if
+
+.SS Field Separation:
+
+.nf
+$ line="one,two,three"
+$ echo "${(@s:,:)line}"
+one two three
+.if

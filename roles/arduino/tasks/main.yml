@@ -1,0 +1,94 @@
+---
+
+- name: Create Arduino download directory.
+  become: yes
+  file:
+    state: directory
+    path: "{{ arduino_download_directory }}"
+    mode: "0755"
+    owner: root
+    group: root
+
+- name: Download Arduino IDE and checksum files.
+  become: yes
+  get_url:
+    url: "{{ item }}"
+    dest: "{{ arduino_download_directory }}/{{ item|basename }}"
+  with_items:
+    - "{{ arduino_ide_url }}"
+    - "{{ arduino_ide_checksums_url }}"
+
+# The Arduino project does not provide PGP signatures for the checksum file,
+# so we're stuck trusting HTTPS for file integrity.
+- name: Verify checksums on downloaded files.
+  command: sha512sum --check --ignore-missing {{ arduino_ide_checksums_url|basename }}
+  changed_when: false
+  args:
+    chdir: "{{ arduino_download_directory }}"
+
+- name: Extract Arduino archive.
+  become: yes
+  unarchive:
+    src: "{{ arduino_download_directory }}/{{ arduino_ide_url|basename }}"
+    dest: "{{ arduino_download_directory }}/"
+    remote_src: yes
+    creates: "{{ arduino_download_directory }}/arduino-{{ arduino_version }}"
+  register: arduino_extract_result
+
+- name: Install Arduino IDE.
+  become: no
+  command: "{{ arduino_download_directory }}/arduino-{{ arduino_version }}/install.sh"
+  when: arduino_extract_result is changed
+  # when: arduino_extract_result|changed  # throws error.
+
+- name: create symbolic link: "{{ arduino_download_directory }}/arduino"
+  become: yes
+  file:
+    src: "{{ arduino_download_directory }}/arduino-{{ arduino_version }}"
+    dest: "{{ arduino_download_directory }}/arduino"
+    state: link
+
+- name: Installs Arduino helper scripts.
+  become: yes
+  template:
+    src: "{{ item }}"
+    dest: "/usr/local/bin/{{ item.rstrip('.j2') }}"
+    mode: "0755"
+    owner: root
+    group: root
+  with_items:
+    - arduino-push.j2
+    - arduino-verify.j2
+
+- name: Clone arduino-mk from git
+  become: no
+  git:
+    repo: 'https://github.com/sudar/Arduino-Makefile.git'
+    dest: "~/src/arduino-mk"
+    update: no
+    depth: 1
+
+- name: install dependencies
+  become: yes
+  apt:
+    pkg: "{{ arduino_mk_deps }}"
+    state: present
+
+- name: adding existing user {{ user }} to group dialout
+  become: yes
+  user:
+    name: "{{ user }}"
+    groups: dialout
+    append: yes
+
+- name: ensure udev/rules.d dir exist
+  become: yes
+  file: path=/etc/udev/rules.d state=directory
+
+- name: copy udev rule for arduino
+  become: yes
+  copy:
+    src: 99-arduino.rules
+    dest: /etc/udev/rules.d/
+  notify: "Reload udev rules"
+

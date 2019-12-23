@@ -1,0 +1,63 @@
+- name: Add Apt Keys
+  become: yes
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: "{{ item }}"
+  with_items: "{{ apt_keys }}"
+  when: apt_keys is defined
+
+- name: Add Apt Repos
+  become: yes
+  apt_repository:
+    state: present
+    repo: "{{ item }}"
+  with_items: "{{ apt_repos }}"
+  when: apt_repos is defined
+
+- name: Install APT Packages
+  become: yes
+  apt:
+    pkg: "{{ apt_packages }}"
+    state: present
+    update_cache: yes
+
+# - name: Update to latest PIP
+#   become: yes
+#   pip:
+#     name: pip
+#     state: latest
+
+# - name: Install Global PIP Requirements
+#   become: yes
+#   pip:
+#     requirements: "{{ ansible_env.PWD }}/roles/ubuntu/files/requirements_global.txt"
+#     state: latest
+
+- name: Remove useless items
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "~/Templates"
+    - "~/Public"
+    - "~/examples.desktop"
+
+- name: Create src/projects Directory
+  file:
+    path: "{{ ansible_env.HOME }}/{{ item }}"
+    state: directory
+  with_items:
+    - "src"
+    - "projects"
+
+# - name: Crontab - Clear Day Old Downloads every 4 hours
+#   cron:
+#     job: "find ~/Downloads -type f -mtime +0 -delete"
+#     hour: "*/4"
+#     minute: "0"
+#     name: "Clear Downloads"
+
+- include_tasks: gpg.yml
+
+- include_tasks: zsh.yml
+
